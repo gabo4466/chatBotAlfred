@@ -1,4 +1,4 @@
-function parseMessage(message) {
+const parseMessage = (message) => {
 
     let parsedMessage = {  // Contains the component parts.
         tags: null,
@@ -79,7 +79,7 @@ function parseMessage(message) {
     return parsedMessage;
 }
 
-function parseTags(tags) {
+const parseTags = (tags) => {
     // badge-info=;badges=broadcaster/1;color=#0000FF;...
 
     const tagsToIgnore = {  // List of tags to ignore.
@@ -169,7 +169,7 @@ function parseTags(tags) {
 
 // Parses the command component of the IRC message.
 
-function parseCommand(rawCommandComponent) {
+const parseCommand = (rawCommandComponent) => {
     let parsedCommand = null;
     commandParts = rawCommandComponent.split(' ');
 
@@ -246,7 +246,7 @@ function parseCommand(rawCommandComponent) {
 
 // Parses the source (nick and host) components of the IRC message.
 
-function parseSource(rawSourceComponent) {
+const parseSource = (rawSourceComponent) => {
     if (null == rawSourceComponent) {  // Not all messages contain a source
         return null;
     }
@@ -261,7 +261,7 @@ function parseSource(rawSourceComponent) {
 
 // Parsing the IRC parameters component if it contains a command (e.g., !dice).
 
-function parseParameters(rawParametersComponent, command) {
+const parseParameters = (rawParametersComponent, command) => {
     let idx = 0
     let commandParts = rawParametersComponent.slice(idx + 1).trim();
     let paramsIdx = commandParts.indexOf(' ');
@@ -278,10 +278,6 @@ function parseParameters(rawParametersComponent, command) {
     return command;
 }
 
-export module = {
-    parseCommand,
-    parseParameters,
-    parseSource,
-    parseTags,
+module.exports = {
     parseMessage
 }

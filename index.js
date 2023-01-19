@@ -1,6 +1,10 @@
 const WebSocketClient = require('websocket').client;
 require('dotenv').config()
 
+const {
+    parseMessage
+} = require('./parsers');
+
 // TODO: IMPORT PARSERS FROM PARSERS FILE
 
 const client = new WebSocketClient();
@@ -64,9 +68,6 @@ function messageHandler(message) {
 
 
             }
-
-
-
             // console.log(`${newMessage.source.nick}: ${newMessage.parameters}`);
         }
 

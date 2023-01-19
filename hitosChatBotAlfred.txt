@@ -1,0 +1,9 @@
+Chat Bot Alfred:
+	Encargado de ayudar al streamer con tareas de moderacion y comandos que permitan interactuar con la comunidad.
+-Funciones basicas de moderacion.
+-Moderacion automatica de spoilers.
+-Silencio de usuarios con reiteracion de spoilers.
+-Baneo con acumulacion de incidencias.
+-Alertas de follow, sub, donacion, raid.
+-Comandos miscelaneos.
+-Alertas metas.
