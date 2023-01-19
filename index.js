@@ -5,7 +5,14 @@ const {
     parseMessage
 } = require('./parsers');
 
-// TODO: IMPORT PARSERS FROM PARSERS FILE
+const {
+    ircHandler
+} = require('./controllers/messageHandlers');
+const {
+    onClose,
+    onError
+} = require('./controllers/configHandlers');
+
 
 const client = new WebSocketClient();
 const channel = `#${process.env.channel}`;
@@ -16,62 +23,28 @@ client.on('connectFailed', function (error) {
     console.log('Connect Error: ' + error.toString());
 });
 
-client.on('connect', function (connection) {
+client.on('connect', (connection) => {
     console.log('WebSocket Client Connected');
 
+    // Set auth && channel data
     connection.sendUTF('CAP REQ :twitch.tv/membership twitch.tv/tags twitch.tv/commands');
     connection.sendUTF(`PASS ${password}`);
     connection.sendUTF(`NICK ${account}`);
     connection.sendUTF(`JOIN ${channel},${channel}`);
 
+    // Adding handlers for socket events
 
-    connection.on('error', function (error) {
-        console.log("Connection Error: " + error.toString());
-    });
+    connection.on('error', onError);
 
-    connection.on('close', function () {
-        console.log('Connection Closed');
-        console.log(`close description: ${connection.closeDescription}`);
-        console.log(`close reason code: ${connection.closeReasonCode}`);
-    });
+    // Event on close connection
+    connection.on('close', onClose);
 
     // Process the Twitch IRC message.
-
-    connection.on('message', function (ircMessage) {
-        if (ircMessage.type === 'utf8') {
-            let rawIrcMessage = ircMessage.utf8Data.trimEnd();
-            let messages = rawIrcMessage.split('\r\n');
-            messages.forEach(messageHandler);
-        }
-    });
+    connection.on('message', ircHandler);
 
 });
 
 client.connect('ws://irc-ws.chat.twitch.tv:80');
 
-function messageHandler(message) {
-    let newMessage = parseMessage(message);
-    if (newMessage) {
 
-        console.log(newMessage);
-
-        // Message has content
-        if (newMessage.parameters) {
-
-            let command = newMessage.command.botCommand
-            // is Message a botCommand
-            if (command) {
-                // Which command?
-                if (command === 'nacho') {
-                    // Nacho command handler
-                }
-
-
-            }
-            // console.log(`${newMessage.source.nick}: ${newMessage.parameters}`);
-        }
-
-
-    }
-}
 
