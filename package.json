@@ -1,0 +1,7 @@
+{
+  "name": "chatBotAlfred",
+  "version": "1.0.0",
+  "description": "Helpful chatbot for twitch made for educational porpouses",
+  "main": "index.js",
+  "license": "MIT"
+}
