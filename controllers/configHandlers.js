@@ -1,4 +1,4 @@
-const onClose = () => {
+const onClose = (connection) => {
     console.log('Connection Closed');
     console.log(`close description: ${connection.closeDescription}`);
     console.log(`close reason code: ${connection.closeReasonCode}`);

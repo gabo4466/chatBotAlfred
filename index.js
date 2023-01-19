@@ -2,10 +2,6 @@ const WebSocketClient = require('websocket').client;
 require('dotenv').config()
 
 const {
-    parseMessage
-} = require('./parsers');
-
-const {
     ircHandler
 } = require('./controllers/messageHandlers');
 const {
@@ -31,6 +27,7 @@ client.on('connect', (connection) => {
     connection.sendUTF(`PASS ${password}`);
     connection.sendUTF(`NICK ${account}`);
     connection.sendUTF(`JOIN ${channel},${channel}`);
+    connection.sendUTF(`PRIVMSG ${channel} : Hola, llego Alfred`);
 
     // Adding handlers for socket events
 
@@ -40,7 +37,9 @@ client.on('connect', (connection) => {
     connection.on('close', onClose);
 
     // Process the Twitch IRC message.
-    connection.on('message', ircHandler);
+    connection.on('message', (ircMessage) => {
+        ircHandler(connection, ircMessage)
+    });
 
 });
 
