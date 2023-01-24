@@ -1,9 +1,10 @@
+const { getFirestore } = require('firebase-admin/firestore');
 const {
     parseMessage
 } = require('../helpers/parsers');
 
 const {
-    nachoCommand
+    boniatoCommand
 } = require('./commands')
 
 const logger = require('logger').createLogger('chatHistory.log');
@@ -20,13 +21,19 @@ function messageHandler(connection, message) {
             // is Message a botCommand
             if (command) {
                 // Which command?
-                if (command === 'nacho') {
+                if (command === 'boniato') {
                     // Nacho command handler
-                    nachoCommand(connection);
+                    boniatoCommand(connection);
                 }
             }
             console.log(`${newMessage.source.nick}:${newMessage.parameters}`);
             logger.info(`${newMessage.source.nick}:${newMessage.parameters}`);
+            const fireStore = getFirestore();
+            if (newMessage.source.nick) {
+                fireStore.collection('users').doc(newMessage.source.nick).set({});
+
+            }
+
         }
 
 
