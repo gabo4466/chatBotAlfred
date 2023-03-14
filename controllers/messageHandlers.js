@@ -1,4 +1,5 @@
 const { getFirestore } = require('firebase-admin/firestore');
+const { filterSpoilers } = require('../helpers/filters');
 const {
     parseMessage
 } = require('../helpers/parsers');
@@ -18,21 +19,28 @@ function messageHandler(connection, message) {
         if (newMessage.parameters && newMessage.source) {
 
             let command = newMessage.command.botCommand
-            // is Message a botCommand
-            if (command) {
-                // Which command?
-                if (command === 'boniato') {
-                    // Nacho command handler
-                    boniatoCommand(connection);
-                }
-            }
-            console.log(`${newMessage.source.nick}:${newMessage.parameters}`);
-            logger.info(`${newMessage.source.nick}:${newMessage.parameters}`);
+
             const fireStore = getFirestore();
             if (newMessage.source.nick) {
+                filterSpoilers(newMessage.parameters, newMessage.source.nick, connection);
+                console.log(`${newMessage.source.nick}:${newMessage.parameters}`);
+                logger.info(`${newMessage.source.nick}:${newMessage.parameters}`);
                 fireStore.collection('users').doc(newMessage.source.nick).set({});
+            }
+
+            // is Message a botCommand
+            if (command) {
+                switch (command) {
+                    case 'boniato':
+                        // Boniato command handler
+                        boniatoCommand(connection);
+                        break;
+                    default:
+                }
 
             }
+
+
 
         }
 
